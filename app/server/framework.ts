@@ -9,7 +9,7 @@ export function localFramework(store:Store,workspace:string){
  const entries=()=>topic?.entries??section?.entries??chapter?.entries??introduction.entries;
  function append(line:string,page:number,index:number){
   const clean=line.trim();const label=clean.match(/^(定义|定理|推论|例)\s*(\d+(?:\.\d+)*)/);const other=clean.match(/^(证明|习题|练习|解|注)(?=[:：\s]|$)/);const numbered=clean.match(/^\d+[.．、]\s*[^。？；]+$/);
-  const begin=label||other||(numbered&&clean.length<=45);
+  const begin=label||other||(numbered&&clean.length<=45&&!/[\$\\]/.test(clean));
   if(!entry||begin){const kind=label?(label[1]==='例'?'例题':label[1]):other?other[1]:begin?'条目':'正文';const title=label?label[1]+' '+label[2]:other?clean.slice(0,60):begin?clean:'教材正文';const anchor=facts.find(f=>!f.source.referenceId&&f.source.pdfIndex===page&&f.content.includes(clean));entry={id:`p${page}-l${index}`,kind,title,body:'',sourcePages:[],kp:anchor?.kp??null};entries().push(entry);}
   entry.body+=(entry.body?'\n':'')+line;if(!entry.sourcePages.includes(page))entry.sourcePages.push(page);capturedLines++;
  }

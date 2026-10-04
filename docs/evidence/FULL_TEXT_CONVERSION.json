@@ -1,0 +1,21 @@
+{
+  "version": "1.3.1",
+  "scope": "WHOLE USER TEXT PDF STRUCTURAL CONVERSION; NOT WHOLE BOOK AI REVIEW",
+  "pages": 216,
+  "textLines": 8184,
+  "capturedLines": 8184,
+  "entries": 1047,
+  "complete": true,
+  "status": "TEXT_CONVERTED",
+  "notice": "全文按教材顺序转换；公式自动检查不等于数学内容已审核。",
+  "parts": 138,
+  "convertedNonblankBlocks": 1047,
+  "uniqueBlocks": 1047,
+  "formalDefinitions": 40,
+  "theorems": 86,
+  "examples": 335,
+  "proofs": 5,
+  "exercises": 35,
+  "blocksWithFormulaIssues": 11,
+  "maxUnitCharacters": 7992
+}

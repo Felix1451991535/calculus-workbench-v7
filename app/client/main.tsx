@@ -18,7 +18,7 @@ async function api(url:string,body?:any,method?:string){
  const res=await fetch('/api'+url,{method:method??(body?'POST':'GET'),headers:{...(body&&!form?{'Content-Type':'application/json'}:{}),...(body?{'X-Session-Token':sessionToken}:{})},body:body?(form?body:JSON.stringify(body)):undefined});
  const result=await res.json();if(!res.ok)throw new Error(result.error??'请求失败');return result;
 }
-function MathText({children,original=false}:{children:string;original?:boolean}){return <Markdown remarkPlugins={[remarkMath]} rehypePlugins={[[rehypeKatex,{throwOnError:false,trust:false,strict:original?'ignore':'error'}]]}>{children}</Markdown>;}
+const MathText=React.memo(function MathText({children,original=false}:{children:string;original?:boolean}){return <Markdown remarkPlugins={[remarkMath]} rehypePlugins={[[rehypeKatex,{throwOnError:false,trust:false,strict:original?'ignore':'error'}]]}>{children}</Markdown>;} );
 function Modal({title,description,children,open,onClose}:{title:string;description?:string;children:React.ReactNode;open:boolean;onClose:()=>void}){
  return <Dialog.Root open={open} onOpenChange={v=>!v&&onClose()}><Dialog.Portal><Dialog.Overlay className="overlay"/><Dialog.Content className="modal"><Dialog.Title className="modal-title">{title}</Dialog.Title><Dialog.Description className="modal-description">{description??'请确认内容后保存。'}</Dialog.Description><Dialog.Close className="close icon-button" aria-label="关闭"><X size={19}/></Dialog.Close>{children}</Dialog.Content></Dialog.Portal></Dialog.Root>;
 }

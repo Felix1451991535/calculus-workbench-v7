@@ -39,9 +39,9 @@ export async function structured<T>(schema:z.ZodType<T>,messages:any[],visionInp
 }
 export function mathErrors(body:string) {
   const errors:string[]=[];
-  const matches=[...body.matchAll(/\$\$([\s\S]*?)\$\$|(?<!\$)\$([^$\n]+)\$(?!\$)|\\\[([\s\S]*?)\\\]|\\\(([\s\S]*?)\\\)/g)];
-  for(const m of matches){try{katex.renderToString(m[1]??m[2]??m[3]??m[4],{throwOnError:true,strict:'error',trust:false});}catch{errors.push(`公式解析失败：${m[0].slice(0,80)}`);}}
-  const stripped=body.replace(/\$\$[\s\S]*?\$\$|(?<!\$)\$[^$\n]+\$(?!\$)|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)/g,'');
+  const matches=[...body.matchAll(/\$\$([\s\S]*?)\$\$|(?<!\$)\$([^$]+)\$(?!\$)|\\\[([\s\S]*?)\\\]|\\\(([\s\S]*?)\\\)/g)];
+  for(const m of matches){try{katex.renderToString(m[1]??m[2]??m[3]??m[4],{throwOnError:true,strict:'error',trust:false,displayMode:m[1]!==undefined||m[3]!==undefined});}catch{errors.push(`公式解析失败：${m[0].slice(0,80)}`);}}
+  const stripped=body.replace(/\$\$[\s\S]*?\$\$|(?<!\$)\$[^$]+\$(?!\$)|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)/g,'');
   if(/\\(frac|sum|int|lim|sqrt|begin|alpha|epsilon|delta|forall|exists)\b/.test(stripped))errors.push('存在未包裹在数学定界符中的 LaTeX');
   if((stripped.match(/\$/g)||[]).length)errors.push('数学定界符不完整');
   if(body.includes('\uFFFD'))errors.push('存在乱码替换符');

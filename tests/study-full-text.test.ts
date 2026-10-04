@@ -1,0 +1,15 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdirSync,mkdtempSync} from 'node:fs';
+import path from 'node:path';
+import {Store} from '../app/server/store.js';
+import {getStudy,studyUnits,generateStudy} from '../app/server/study.js';
+import {configure} from '../app/server/ai.js';
+
+function fixture(){mkdirSync('work/tests',{recursive:true});const store=new Store(mkdtempSync(path.resolve('work/tests/full-source-')));store.run('INSERT INTO workspaces VALUES(?,?,?,?,?,?)','w','AUTHORED','hash','data/test.pdf','TEST',2);mkdirSync(path.join(store.root,'data/workspaces/w/knowledge'),{recursive:true});return store;}
+test('全文转换保留导言、正式定义、跨页证明、例题与末尾习题，旧摘要不得标为已审核',()=>{
+ const store=fixture();try{store.run('INSERT INTO pages VALUES(?,?,?,?,?,?,?)','w',1,'教材导言\n第一章 函数\n1.1 函数\n1.1.1 函数的定义\n定义 1.1\nFor every input in $D$ there is exactly one output.\n定理 1.1\nIf $a=b$, then $a^2=b^2$.\n证明\nMultiply both sides by the same number.',600,800,'[]','EXTRACTED');store.run('INSERT INTO pages VALUES(?,?,?,?,?,?,?)','w',2,'This proof continues on the next page.\n例 1.1\nFor $f(x)=x^2$, compute $f(2)=4$.\n习题\nCompute $f(3)$.',600,800,'[]','EXTRACTED');const result=getStudy(store,'w');assert.equal(result.conversion.complete,true);const blocks=result.units.flatMap((u:any)=>u.blocks);assert.ok(blocks.some((b:any)=>b.content.includes('教材导言')));assert.equal(blocks.filter((b:any)=>b.kind==='定义').length,1);assert.equal(blocks.filter((b:any)=>b.kind==='定理').length,1);assert.ok(blocks.find((b:any)=>b.kind==='证明').content.includes('next page'));assert.ok(blocks.some((b:any)=>b.content.includes('f(3)')));assert.equal(new Set(blocks.map((b:any)=>b.id)).size,blocks.length);assert.ok(result.units.every((u:any)=>!u.lesson));}finally{store.close();}
+});
+test('独立审查声称通过仍不能发布遗漏定义的摘要',async()=>{
+ const store=fixture();const original=globalThis.fetch;try{store.run('INSERT INTO pages VALUES(?,?,?,?,?,?,?)','w',1,'第一章 函数\n1.1 函数\n1.1.1 函数定义\n定义 1.1\nEvery input has exactly one output.\n定义 1.2\nDomain means the set of allowed inputs.',600,800,'[]','EXTRACTED');const unit=studyUnits(store,'w')[0];globalThis.fetch=(async(_url:any,init:any)=>{const req=JSON.parse(init.body);const reviewer=req.messages[0].content.includes('独立教材一致性');const output=reviewer?{pass:true,issues:[],beginnerCanSolve:true,mathConsistent:true}:{title:'Summary',summary:'A summary of a function with an omitted domain definition.',concepts:[{title:'Function',body:'Every allowed input has exactly one output. This is a function.',sourceIds:[unit.source[0].id],webIds:[]}],mistakes:[],checks:[],gaps:[]};return new Response(JSON.stringify({choices:[{message:{content:JSON.stringify(output)}}]}));}) as typeof fetch;configure({baseUrl:'http://localhost:1111',textModel:'TEST',apiKey:'TEST',timeout:5000,retries:0});const lesson=await generateStudy(store,'w',unit.id,false);assert.equal(lesson.status,'NEEDS_REVISION');assert.ok(lesson.review.issues.some((s:string)=>s.includes('遗漏原文条目')));}finally{globalThis.fetch=original;store.close();}
+});
