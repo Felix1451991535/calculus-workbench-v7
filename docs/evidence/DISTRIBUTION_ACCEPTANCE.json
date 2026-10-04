@@ -1,5 +1,5 @@
 {
-  "created": "2026-10-04T08:31:20.408Z",
+  "created": "2026-10-04T09:08:31.239Z",
   "results": [
     {
       "name": "Windows ZIP解压与内置运行时启动",
@@ -7,17 +7,17 @@
       "detail": {
         "status": "ok",
         "product": "calculus-workbench-v7",
-        "instance": "581be39ef678e34ace361e48c826fe02f760c26ef7193fa59eb60ac39973ac6d",
+        "instance": "364b38182b7ea04177dfcec34ebf8bd5a43c052128d25b92ea8d9f5e0959e059",
         "schema": "1",
-        "version": "1.0.0"
+        "version": "1.0.1"
       }
     },
     {
       "name": "发行包实际PDF导入、备份及重启读取",
       "status": "PASS",
       "detail": {
-        "workspace": "1d9c1671-f480-4cea-86df-b169a7aaf975",
-        "backup": "2026-10-04T08-26-46-253Z-manual"
+        "workspace": "935a1468-fe10-4bb2-a40f-d77a776a38b2",
+        "backup": "2026-10-04T09-04-43-307Z-manual"
       }
     },
     {
@@ -32,7 +32,7 @@
       "name": "实际在线签名清单检查及补丁下载",
       "status": "PASS",
       "detail": {
-        "version": "1.0.1",
+        "version": "1.1.0",
         "status": "DOWNLOADED"
       }
     },
@@ -41,7 +41,7 @@
       "status": "PASS",
       "detail": {
         "state": "STABLE",
-        "version": "1.0.1"
+        "version": "1.1.0"
       }
     },
     {
@@ -57,7 +57,7 @@
       "status": "PASS",
       "detail": {
         "state": "STABLE",
-        "version": "1.0.1",
+        "version": "1.1.0",
         "delivery": "full",
         "dataPreserved": true
       }
