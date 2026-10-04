@@ -1,0 +1,19 @@
+{
+  "created": "2026-10-04T07:44:42.738Z",
+  "status": "PASS",
+  "scope": "仅自编加法回归样本；不代表真实产品所有故障均可自动修复。",
+  "stableUnchanged": true,
+  "result": {
+    "id": "6b0bd8cf-8c6b-4f19-9dde-f07ef542462f",
+    "state": "TESTING",
+    "created": "2026-10-04T07:44:38.082Z",
+    "rounds": [
+      {
+        "round": 1,
+        "status": "PASS",
+        "summary": "修复 app/server/index.ts 中 add 函数的实现错误：当前使用减法导致 add(2,3) 返回 -1，应改为加法以返回 5。"
+      }
+    ],
+    "next": "Candidate 构建与离线测试通过。仍需完整发布验收、签名与发行，不自动冒充 Stable。"
+  }
+}

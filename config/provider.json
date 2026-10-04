@@ -1,0 +1,8 @@
+{
+  "provider": "DeepSeek",
+  "baseUrl": "https://api.deepseek.com",
+  "textModel": "deepseek-flash",
+  "visionModel": "deepseek-flash",
+  "timeout": 180000,
+  "retries": 1
+}

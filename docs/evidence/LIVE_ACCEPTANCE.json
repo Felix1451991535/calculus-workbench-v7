@@ -1,0 +1,121 @@
+{
+  "created": "2026-10-04T07:50:00.706Z",
+  "provider": "DeepSeek",
+  "textModel": "deepseek-flash",
+  "visionModel": "deepseek-flash",
+  "sample": "数学正确的自编验收样本，独立work目录；不冒充用户教材或完整教材验收。",
+  "results": [
+    {
+      "name": "真实数学样本：文字与扫描PDF导入",
+      "status": "PASS",
+      "detail": {
+        "workspace": "b33424bb-af8c-4102-aa96-603290e8fcc4",
+        "duplicate": false,
+        "audit": {
+          "pages": 2,
+          "processedPages": 2,
+          "pageProcessing": 1,
+          "verified": 0,
+          "totalCandidates": 1,
+          "verifiedRatio": 0,
+          "counts": {
+            "片段": 1
+          },
+          "unresolved": [
+            {
+              "type": "页面",
+              "page": 2,
+              "reason": "NEEDS_VERIFY"
+            }
+          ],
+          "pending": [
+            {
+              "id": "9fa2f2bf-2aac-449c-b572-2df2f1e95ec1",
+              "title": "AUTHORED TEST TEXTBOOK - NOT USER MATE",
+              "chapter": "待核验目录"
+            }
+          ],
+          "trust": "NEEDS_VERIFY",
+          "notice": "已核验比例仅以已发现候选为分母，不代表全部教材事实已识别。章节结构及完整性仍需对照目录核验。"
+        }
+      }
+    },
+    {
+      "name": "真实DeepSeek知识页与独立Reviewer",
+      "status": "PASS",
+      "detail": {
+        "id": "d0cc9e9a-51e6-45b2-bbf9-e380e3f48403",
+        "status": "PUBLISHED",
+        "characters": 4687,
+        "review": {
+          "pass": true,
+          "issues": [],
+          "beginnerCanSolve": true,
+          "mathConsistent": true
+        }
+      }
+    },
+    {
+      "name": "真实Tutor第一轮：量词与例子",
+      "status": "PASS",
+      "detail": {
+        "status": "PUBLISHED",
+        "review": {
+          "pass": true,
+          "issues": [],
+          "beginnerCanSolve": true,
+          "mathConsistent": true
+        }
+      }
+    },
+    {
+      "name": "真实Tutor第二轮：改变策略",
+      "status": "PASS",
+      "detail": {
+        "status": "PUBLISHED",
+        "review": {
+          "pass": true,
+          "issues": [],
+          "beginnerCanSolve": true,
+          "mathConsistent": true
+        }
+      }
+    },
+    {
+      "name": "真实视觉：扫描公式与候选隔离",
+      "status": "PASS",
+      "detail": {
+        "candidates": 8,
+        "status": "NEEDS_VERIFY",
+        "conflicts": [
+          "提供的 pdfText 字段为空，而图片中存在可识别文字；OCR/视觉读取结果与 pdfText 不一致。",
+          "页面顶部标题“AUTHORED SCANNED TEST PAGE”是否属于章节正文的一部分待核验。"
+        ]
+      }
+    },
+    {
+      "name": "真实全书结构候选与符号隔离",
+      "status": "PASS",
+      "detail": {
+        "processed": 9,
+        "status": "NEEDS_VERIFY"
+      }
+    },
+    {
+      "name": "真实原创题：Generator独立Solver与Critic",
+      "status": "PASS",
+      "detail": {
+        "id": "202452e7-64ee-4482-aa82-42c75703e4ec",
+        "status": "PUBLISHED"
+      }
+    },
+    {
+      "name": "真实课堂转写整理并保留原始记录",
+      "status": "PASS",
+      "detail": {
+        "id": "a4cfd621-9269-4318-a187-54c95516b74c",
+        "claims": 3
+      }
+    }
+  ]
+}

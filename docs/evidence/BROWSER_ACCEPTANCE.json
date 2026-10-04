@@ -1,0 +1,30 @@
+{
+  "created": "2026-10-04T08:07:05.910Z",
+  "fixture": "TEST FIXTURE ONLY; no user textbooks or credentials",
+  "results": [
+    {
+      "name": "亮色首屏与中文 UI",
+      "status": "PASS"
+    },
+    {
+      "name": "暗色主题与窄屏",
+      "status": "PASS"
+    },
+    {
+      "name": "浏览器导入教材并查看扫描待核验",
+      "status": "PASS"
+    },
+    {
+      "name": "人工核验、原始记录及诊断",
+      "status": "PASS"
+    },
+    {
+      "name": "设置、完整备份与公式视图",
+      "status": "PASS"
+    },
+    {
+      "name": "无前端异常及窄屏 Tutor",
+      "status": "PASS"
+    }
+  ]
+}
