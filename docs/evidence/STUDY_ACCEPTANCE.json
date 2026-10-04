@@ -1,0 +1,17 @@
+{
+  "fixture": "AUTHORED LOCAL MODEL TEST; no user data or key",
+  "results": [
+    {
+      "name": "复习首页章节目录、详解卡片、公式渲染与发送同意",
+      "status": "PASS"
+    },
+    {
+      "name": "显式AI问答入口、选中内容追问与候选身份保留",
+      "status": "PASS"
+    },
+    {
+      "name": "窄屏阅读与问答、刷新缓存、无前端异常",
+      "status": "PASS"
+    }
+  ]
+}

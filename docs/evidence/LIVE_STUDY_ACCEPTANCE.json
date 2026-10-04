@@ -1,0 +1,22 @@
+{
+  "version": "1.3.0",
+  "scope": "ONE REAL USER TEXTBOOK SECTION; NOT FULL BOOK",
+  "status": "CANDIDATE_REVIEWED",
+  "conceptCount": 7,
+  "characters": 3444,
+  "networkSources": 2,
+  "networkWarnings": [],
+  "review": {
+    "pass": true,
+    "issues": [],
+    "beginnerCanSolve": true,
+    "mathConsistent": true
+  },
+  "tutorStatus": "CANDIDATE_REVIEWED",
+  "tutorReview": {
+    "pass": true,
+    "issues": [],
+    "beginnerCanSolve": true,
+    "mathConsistent": true
+  }
+}

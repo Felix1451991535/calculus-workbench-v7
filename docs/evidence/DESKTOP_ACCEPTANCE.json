@@ -1,5 +1,7 @@
 {
+  "version": "1.3.0",
   "packaged": true,
+  "fixture": "AUTHORED ISOLATED DATA OUTSIDE PROJECT",
   "results": [
     {
       "name": "独立桌面窗口实际启动",
@@ -14,7 +16,7 @@
       "status": "PASS"
     },
     {
-      "name": "实际签名补丁安装后桌面窗口重启与笔记保留（隔离夹具）",
+      "name": "一键按钮自动安装真实签名补丁、桌面重启与笔记保留（下载夹具、实际安装）",
       "status": "PASS"
     },
     {

@@ -14,6 +14,7 @@ import { repairCandidate } from './maintenance.js';
 import { organizeRecord,makeQuestion,structureBook } from './learning.js';
 import {visionBatch,batchState,pauseBatch} from './vision-batch.js';
 import {getFramework,explainFramework} from './framework.js';
+import {getStudy,generateStudy,prepareStudy,pauseStudy,studyTutor} from './study.js';
 import {bookSources,bookSource,attachReference} from './sources.js';
 import {importNotes} from './notes.js';
 
@@ -46,7 +47,8 @@ export function createApp(root:string){
  app.post('/api/import',upload.single('pdf'),wrap(async(req,res)=>{
   if(!req.file||!req.file.buffer.subarray(0,5).equals(Buffer.from('%PDF-')))throw new Error('请选择有效 PDF 文件');
   const title=z.string().min(1).max(180).parse(req.body.title||req.file.originalname.replace(/\.pdf$/i,''));
-  const bytes=new Uint8Array(req.file.buffer);res.json({task:await store.task(null,'IMPORT',p=>importPDF(store,bytes,title,p))});
+  const autoStudy=req.body.autoStudy==='true';
+  const bytes=new Uint8Array(req.file.buffer);res.json({task:await store.task(null,'IMPORT',async p=>{const imported=await importPDF(store,bytes,title,p);if(autoStudy){const studyTask=await store.task(imported.workspace,'STUDY',progress=>prepareStudy(store,imported.workspace,true,progress));return {...imported,studyTask};}return imported;})});
  }));
  app.get('/api/tasks',(_req,res)=>res.json(store.all('SELECT t.id,t.kind,t.status,t.progress,t.created,t.updated,w.title AS textbook,t.result FROM tasks t LEFT JOIN workspaces w ON w.id=t.workspace ORDER BY t.created DESC LIMIT 50').map(t=>{const result=JSON.parse(t.result);const {result:raw,...summary}=t;return {...summary,error:t.status==='FAILED'?String(result.error??'任务失败'):null};})));
  app.post('/api/workspaces/:id/notes-file',upload.single('notes'),wrap(async(req,res)=>{if(!req.file)throw new Error('请选择Word或TXT笔记文件');res.json(await importNotes(store,req.params.id,req.file.buffer,req.file.originalname));}));
@@ -67,6 +69,11 @@ export function createApp(root:string){
  }));
  app.get('/api/workspaces/:id/audit',wrap((req,res)=>res.json(store.audit(req.params.id))));
  app.get('/api/workspaces/:id/framework',wrap((req,res)=>res.json(getFramework(store,req.params.id))));
+ app.get('/api/workspaces/:id/study',wrap((req,res)=>res.json(getStudy(store,req.params.id))));
+ app.post('/api/workspaces/:id/study/generate',wrap(async(req,res)=>{const input=z.object({unit:z.string(),online:z.boolean().default(true),force:z.boolean().default(false),consent:z.literal(true)}).parse(req.body);res.json({task:await store.task(req.params.id,'STUDY',async()=>generateStudy(store,req.params.id,input.unit,input.online,input.force))});}));
+ app.post('/api/workspaces/:id/study/prepare',wrap(async(req,res)=>{const input=z.object({online:z.boolean().default(true),consent:z.literal(true)}).parse(req.body);if(getStudy(store,req.params.id).active)throw new Error('教材正在整理，请稍候或暂停。');res.json({task:await store.task(req.params.id,'STUDY',p=>prepareStudy(store,req.params.id,input.online,p))});}));
+ app.post('/api/workspaces/:id/study/pause',wrap((req,res)=>res.json(pauseStudy(store,req.params.id))));
+ app.post('/api/workspaces/:id/study/tutor',wrap(async(req,res)=>{const input=z.object({unit:z.string(),question:z.string().min(1).max(10000),selection:z.string().max(10000).default(''),consent:z.literal(true)}).parse(req.body);res.json({task:await store.task(req.params.id,'TUTOR',async()=>studyTutor(store,req.params.id,input.unit,input.question,input.selection))});}));
  app.post('/api/workspaces/:id/framework',wrap(async(req,res)=>res.json({task:await store.task(req.params.id,'FRAMEWORK',async()=>explainFramework(store,req.params.id))})));
  app.post('/api/workspaces/:id/structure',wrap(async(req,res)=>{if(req.body.consent!==true)throw new Error('请确认发送教材结构候选给配置模型');res.json({task:await store.task(req.params.id,'STRUCTURE',async()=>structureBook(store,req.params.id))});}));
  app.get('/api/workspaces/:id/structure',wrap((req,res)=>res.json({edges:store.all('SELECT * FROM edges WHERE workspace=?',req.params.id),symbols:store.all('SELECT * FROM symbols WHERE workspace=?',req.params.id)})));
