@@ -18,3 +18,8 @@ config/last-known-good.json
 *.key
 *.pem
 !config/update-public.pem
+
+release/desktop/
+release/*.exe
+
+release/*-Windows-x64/

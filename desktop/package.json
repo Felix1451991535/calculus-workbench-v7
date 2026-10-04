@@ -1,0 +1,19 @@
+{
+  "name": "calculus-workbench-desktop",
+  "version": "1.2.1",
+  "private": true,
+  "description": "知微高数学习工作台 Windows 桌面版",
+  "author": "Calculus Workbench",
+  "main": "main.cjs",
+  "devDependencies": {"electron": "44.5.1", "electron-builder": "26.15.3"},
+  "build": {
+    "appId": "cn.zhiwei.calculus.workbench",
+    "productName": "知微高数工作台",
+    "directories": {"output": "../release/desktop"},
+    "files": ["main.cjs", "package.json"],
+    "afterPack": "desktop/after-pack.cjs",
+    "extraResources": [{"from": "../work/desktop-payload", "to": "workbench", "filter": ["**/*"]}],
+    "win": {"target": [{"target": "nsis", "arch": ["x64"]}], "signAndEditExecutable": false, "artifactName": "CalculusWorkbench-Setup-${version}.${ext}"},
+    "nsis": {"oneClick": false, "perMachine": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true, "createStartMenuShortcut": true, "deleteAppDataOnUninstall": false, "runAfterFinish": true, "include": "installer.nsh"}
+  }
+}

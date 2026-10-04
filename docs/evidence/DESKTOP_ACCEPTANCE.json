@@ -1,0 +1,25 @@
+{
+  "packaged": true,
+  "results": [
+    {
+      "name": "独立桌面窗口实际启动",
+      "status": "PASS"
+    },
+    {
+      "name": "实际教材导入与持久任务状态",
+      "status": "PASS"
+    },
+    {
+      "name": "桌面Word导入、检查文字与保存记录",
+      "status": "PASS"
+    },
+    {
+      "name": "实际签名补丁安装后桌面窗口重启与笔记保留（隔离夹具）",
+      "status": "PASS"
+    },
+    {
+      "name": "无桌面页面异常",
+      "status": "PASS"
+    }
+  ]
+}

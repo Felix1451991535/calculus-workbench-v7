@@ -4,6 +4,12 @@ import path from 'node:path';
 import {recover} from './updater.mjs';
 import {createHash} from 'node:crypto';
 const root=process.cwd();
+const desktop=path.join(root,'config/desktop.json');
+if(existsSync(desktop)){
+ const executable=path.resolve(root,JSON.parse(readFileSync(desktop,'utf8')).executable);
+ if(!existsSync(executable))throw new Error('桌面启动程序不存在，请使用安装包修复程序，学习资料仍保留。');
+ const desktopChild=spawn(executable,[],{cwd:path.dirname(executable),detached:true,stdio:'ignore',windowsHide:true});desktopChild.unref();process.exit(0);
+}
 const port=4317;
 const url=`http://127.0.0.1:${port}`;
 const instance=createHash('sha256').update(path.resolve(root).toLowerCase()).digest('hex');

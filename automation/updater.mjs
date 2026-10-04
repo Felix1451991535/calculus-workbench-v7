@@ -56,6 +56,9 @@ async function run(){const args=process.argv.slice(2);const root=path.resolve(ar
  const stage=path.join(root,'updates','extracted-'+Date.now());mkdirSync(stage,{recursive:true});
  execFileSync('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',path.join(path.dirname(fileURLToPath(import.meta.url)),'Extract-SafeZip.ps1'),'-Archive',zip,'-Destination',stage,...(manifest.delivery==='full'?['-Full']:[])],{windowsHide:true,timeout:120000,stdio:'pipe'});
  try{console.log(installPrepared(root,stage,manifest));}catch(e){console.error('更新失败，稳定版本已保留：',e.message);}
+ const desktop=path.join(root,'config/desktop.json');
+ if(existsSync(desktop))atomicJSON(path.join(root,'updates/desktop-install.json'),{status:'FINISHED',finished:Date.now()});
+ if(existsSync(desktop)&&process.env.CALCULUS_DESKTOP_RUNNING==='1')return;
  const child=spawn(process.execPath,[path.join(root,'automation/launch.mjs')],{cwd:root,detached:true,stdio:'ignore',windowsHide:true});child.unref();
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))run().catch(e=>{console.error(e.message);process.exitCode=1;});

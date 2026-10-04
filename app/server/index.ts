@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { readFileSync, writeFileSync, existsSync, cpSync, mkdirSync,appendFileSync,statSync,renameSync } from 'node:fs';
-import { spawn } from 'node:child_process';
+import { spawn,execFile } from 'node:child_process';
 import path from 'node:path';
 import { Store,id,now,contained,hash } from './store.js';
 import { importPDF } from './pdf.js';
@@ -15,6 +15,7 @@ import { organizeRecord,makeQuestion,structureBook } from './learning.js';
 import {visionBatch,batchState,pauseBatch} from './vision-batch.js';
 import {getFramework,explainFramework} from './framework.js';
 import {bookSources,bookSource,attachReference} from './sources.js';
+import {importNotes} from './notes.js';
 
 export function createApp(root:string){
  const store=new Store(root);const app=express();app.disable('x-powered-by');app.use(express.json({limit:'25mb'}));
@@ -47,6 +48,8 @@ export function createApp(root:string){
   const title=z.string().min(1).max(180).parse(req.body.title||req.file.originalname.replace(/\.pdf$/i,''));
   const bytes=new Uint8Array(req.file.buffer);res.json({task:await store.task(null,'IMPORT',p=>importPDF(store,bytes,title,p))});
  }));
+ app.get('/api/tasks',(_req,res)=>res.json(store.all('SELECT t.id,t.kind,t.status,t.progress,t.created,t.updated,w.title AS textbook,t.result FROM tasks t LEFT JOIN workspaces w ON w.id=t.workspace ORDER BY t.created DESC LIMIT 50').map(t=>{const result=JSON.parse(t.result);const {result:raw,...summary}=t;return {...summary,error:t.status==='FAILED'?String(result.error??'任务失败'):null};})));
+ app.post('/api/workspaces/:id/notes-file',upload.single('notes'),wrap(async(req,res)=>{if(!req.file)throw new Error('请选择Word或TXT笔记文件');res.json(await importNotes(store,req.params.id,req.file.buffer,req.file.originalname));}));
  app.get('/api/tasks/:id',wrap((req,res)=>{const task=store.one('SELECT * FROM tasks WHERE id=?',req.params.id);if(!task)return res.status(404).json({error:'任务不存在'});res.json({...task,result:JSON.parse(task.result)});}));
  app.get('/api/workspaces/:id/pdf',wrap((req,res)=>res.sendFile(contained(root,bookSource(store,req.params.id,String(req.query.reference??'')).pdf))));
  app.get('/api/workspaces/:id/sources',wrap((req,res)=>res.json(bookSources(store,req.params.id))));
@@ -64,7 +67,7 @@ export function createApp(root:string){
  }));
  app.get('/api/workspaces/:id/audit',wrap((req,res)=>res.json(store.audit(req.params.id))));
  app.get('/api/workspaces/:id/framework',wrap((req,res)=>res.json(getFramework(store,req.params.id))));
- app.post('/api/workspaces/:id/framework',wrap(async(req,res)=>{if(req.body.consent!==true)throw new Error('请确认将章节标题发送给模型生成简短学习建议');res.json({task:await store.task(req.params.id,'FRAMEWORK',async()=>explainFramework(store,req.params.id))});}));
+ app.post('/api/workspaces/:id/framework',wrap(async(req,res)=>res.json({task:await store.task(req.params.id,'FRAMEWORK',async()=>explainFramework(store,req.params.id))})));
  app.post('/api/workspaces/:id/structure',wrap(async(req,res)=>{if(req.body.consent!==true)throw new Error('请确认发送教材结构候选给配置模型');res.json({task:await store.task(req.params.id,'STRUCTURE',async()=>structureBook(store,req.params.id))});}));
  app.get('/api/workspaces/:id/structure',wrap((req,res)=>res.json({edges:store.all('SELECT * FROM edges WHERE workspace=?',req.params.id),symbols:store.all('SELECT * FROM symbols WHERE workspace=?',req.params.id)})));
  app.post('/api/workspaces/:id/structure/verify',wrap((req,res)=>{const input=z.object({kind:z.enum(['edge','symbol']),from:z.string().optional(),to:z.string().optional(),relation:z.string().optional(),chapter:z.string().optional(),symbol:z.string().optional()}).parse(req.body);if(input.kind==='edge')store.run("UPDATE edges SET status='VERIFIED' WHERE workspace=? AND from_kp=? AND to_kp=? AND kind=?",req.params.id,input.from??'',input.to??'',input.relation??'');else store.run("UPDATE symbols SET status='VERIFIED' WHERE workspace=? AND chapter=? AND symbol=?",req.params.id,input.chapter??'',input.symbol??'');res.json({ok:true});}));
@@ -100,6 +103,7 @@ export function createApp(root:string){
  app.post('/api/updates/install',wrap((req,res)=>{
   if(req.body.confirm!==true)throw new Error('需要确认停止服务并安装更新');
   if(!existsSync(path.join(root,'updates/pending.zip')))throw new Error('请先下载并校验补丁');
+  if(existsSync(path.join(root,'config/desktop.json')))writeFileSync(path.join(root,'updates/desktop-install.json'),JSON.stringify({started:Date.now(),status:'INSTALLING'}));
   const child=spawn(process.execPath,[path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../../automation/updater.mjs'),'--root',root,'--wait-pid',String(process.pid)],{cwd:root,detached:true,stdio:'ignore',windowsHide:true});child.unref();res.json({status:'RESTARTING'});
   setTimeout(()=>{store.close();process.exit(0);},500);
  }));
@@ -108,6 +112,11 @@ export function createApp(root:string){
   res.json({name:folder.split(path.sep).at(-1),message:'完整备份已保存，可使用恢复脚本；恢复前会再次备份现有数据。'});
  }));
  app.get('/api/backups',(_req,res)=>{import('node:fs').then(fs=>res.json(fs.readdirSync(path.join(root,'backups')).filter(n=>existsSync(path.join(root,'backups',n,'backup.json')))));});
+ app.post('/api/maintenance/register',wrap(async(req,res)=>{
+  if(req.body.confirm!==true)throw new Error('需要确认启用本机每日和每周维护');
+  if(process.platform!=='win32')throw new Error('定时维护注册需要Windows');
+  res.json({task:await store.task(null,'MAINTENANCE_REGISTER',()=>new Promise((resolve,reject)=>execFile('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',path.join(root,'automation/Register-MaintenanceTasks.ps1'),'-AppRoot',root],{windowsHide:true,timeout:30000},error=>{if(error)reject(new Error('维护任务注册失败，请检查当前用户的任务计划权限。'));else{store.notify('maintenance','已启用长期维护',{daily:'每日20:00及登录',weekly:'每周六10:00',scope:'当前用户，电脑关闭期间暂停，启动后补跑；维护报告在消息箱查看'});resolve({status:'REGISTERED'});}})))});
+ }));
  app.post('/api/maintenance',wrap(async(_req,res)=>{
   const integrity=store.one('PRAGMA integrity_check');const report={status:Object.values(integrity)[0]==='ok'?'PASS':'FAIL',created:now(),checks:{database:integrity,failedTasks:store.all("SELECT id,kind,updated FROM tasks WHERE status='FAILED'"),formula:store.all("SELECT id,body FROM knowledge WHERE status='PUBLISHED'").flatMap(k=>mathErrors(k.body).map(error=>({id:k.id,error})))},aiRepair:'BLOCKED — 修复需要独立 Candidate、模型凭据与发布闸门，不能直接修改 Stable。'};
   store.notify('maintenance','本机维护检查',report);res.json(report);

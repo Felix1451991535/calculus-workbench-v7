@@ -1,6 +1,6 @@
 {
   "name": "calculus-workbench-v7",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "private": true,
   "type": "module",
   "description": "V7 高等数学 AI 学习工作台",
@@ -18,8 +18,10 @@
     "@napi-rs/canvas": "^1.0.10",
     "@radix-ui/react-dialog": "^1.1.0",
     "express": "^5.1.0",
+    "jszip": "^3.10.1",
     "katex": "^0.16.22",
     "lucide-react": "^0.468.0",
+    "mammoth": "^1.13.0",
     "multer": "^2.0.2",
     "pdfjs-dist": "^6.4.299",
     "react": "^19.1.0",
