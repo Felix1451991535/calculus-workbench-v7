@@ -20,6 +20,11 @@ if(version==='1.3.1'){
  manifest.tests=['23项自动测试通过，包括跨页证明、末尾习题与遗漏定义拦截','TypeScript 检查与生产构建通过'];
  manifest.risk='Candidate；全文结构转换与公式检查不等于完整数学审核，整本 AI 审核以软件实际进度为准。';
 }
+if(version==='1.3.2'){
+ manifest.changes=['修复模型返回无效 JSON 时整本教材转换中断：保留原文并最多重试三次，仍无效则拒绝发布','引言与章节导读按完整准确解释原文审核，数学章节仍必须完整定义、条件、推导及例题','保留 1.3.1 教材全文、正式定义和公式排版修复，旧教材与笔记不变'];
+ manifest.tests=['26项自动测试，包括 JSON 错误重试、完整输入保留与三次拒绝','真实教材章节导读生成与独立审核通过','全文转换与公开签名更新保留数据已验证'];
+ manifest.risk='Candidate；整本教材 AI 转换与审核仍须按实际进度核对，未通过的内容不能标已审核。';
+}
 const fullZip=path.join(root,'release',`CalculusWorkbench-v${version}-Windows-x64.zip`);
 if(!existsSync(fullZip))throw new Error('缺少完整发行包，拒绝发布不能跨版本升级的清单');
 const eligible=p=>/^(app\/(build|dist)\/|node_modules\/|runtime\/|automation\/)[a-zA-Z0-9_./@+-]+$/.test(p)||['package.json','package-lock.json','ACCEPTANCE_REPORT.md','README_使用说明.txt'].includes(p);
