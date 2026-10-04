@@ -1,14 +1,14 @@
 {
-  "version": "1.2.1",
-  "baseVersion": "1.2.0",
-  "type": "Patch",
+  "version": "1.3.0",
+  "baseVersion": "1.2.1",
+  "type": "Minor",
   "schema": 1,
-  "url": "https://github.com/Felix1451991535/calculus-workbench-v7/releases/download/v1.2.1/CalculusWorkbench-v1.2.1-Patch.zip",
-  "sha256": "0bd2bcf79e2288a91e4b29c8215dd74bea08a8666d58e1c7d92efe0af83bcb63",
+  "url": "https://github.com/Felix1451991535/calculus-workbench-v7/releases/download/v1.3.0/CalculusWorkbench-v1.3.0-Patch.zip",
+  "sha256": "3d8531a5c6aae66462f33090ed2ab6b19aade8d4db1f2a24161bb316761b11c3",
   "files": [
     {
       "path": "app/build/server/ai.js",
-      "sha256": "8f609a8085276cd6396419c158fb17528204df7acdf3de2fb8c7a0904cb240af"
+      "sha256": "d34604d5d9b9c12d4cb01678f79307cb2da3918102ec2068ac61a61ce6ca63a9"
     },
     {
       "path": "app/build/server/framework.js",
@@ -16,7 +16,7 @@
     },
     {
       "path": "app/build/server/index.js",
-      "sha256": "d3cd84b5abde8aa434d52624e5df8856597c8dbeb506cb1e1a2ab33017c90f83"
+      "sha256": "4bddea530c03fcb99b64bcab0cef17a98922c0b4a35097877e79b828f5d04d21"
     },
     {
       "path": "app/build/server/learning.js",
@@ -43,6 +43,10 @@
       "sha256": "cc58bc8856a82a1881dd7b0f02270609e4a8125b31dbd4860c46b94889e7c7f1"
     },
     {
+      "path": "app/build/server/study.js",
+      "sha256": "9ec1fbc3f2c1b7c24acceceaf37ac0e4abad2f068653b08e319586314375ca02"
+    },
+    {
       "path": "app/build/server/updates.js",
       "sha256": "c30e9db7b295e463ef59a0a0a39ca371737408ee33905b7b3f7b8f58e4bfb2ce"
     },
@@ -51,12 +55,12 @@
       "sha256": "a1a3eb1b4364a883767beea42321105d9c6de1b0b3add5d900df8db8a4a8d7c2"
     },
     {
-      "path": "app/dist/assets/index-DugEMh_y.js",
-      "sha256": "230674162d1df43cc2bad2b4777abe398e9f1e5c95019cdb2088d5631d008da7"
+      "path": "app/dist/assets/index-BefLhfOZ.js",
+      "sha256": "6b03cca5f5857b50d4226199799957851f8ce7d95528653ed8609ed769215e8d"
     },
     {
-      "path": "app/dist/assets/index-XEDKIpwx.css",
-      "sha256": "06d8cb93a06dbd435317122509b66e729f4faa4c5fccbdf0c18fe8b81d939627"
+      "path": "app/dist/assets/index-CjG_YWB8.css",
+      "sha256": "f04a647012798df84fbaec5df0f33f82c737f891bc97abf3e5250490192fa694"
     },
     {
       "path": "app/dist/assets/KaTeX_AMS-Regular-BQhdFMY1.woff2",
@@ -300,40 +304,39 @@
     },
     {
       "path": "app/dist/index.html",
-      "sha256": "bc30d339da22f6f1ae2c768f5b974cbdba0856d1a088cfc0a53b7ff0a43dcc31"
+      "sha256": "e6dd39d526f792817df3d0ce4bae7d17ce0a7bc54e09978bf5d278ffc8e683ba"
     }
   ],
   "changes": [
-    "V7 独立重做的候选版本：教材核验、学习界面、记录与诊断、签名更新及回滚",
-    "独立Windows桌面窗口、可分享EXE安装包与桌面ZIP、持久任务动态及Word笔记导入"
+    "教材复习首页：按章节组织AI知识卡片，解释符号、条件、推导、例题、易错点与自测",
+    "扫描教材自动识别、联网书目及概念资料检索、独立审查、最多三轮修订与暂停续做",
+    "明确AI问答入口与选中内容追问；保留Word笔记、教材事实版本和学习数据"
   ],
-  "risk": "候选预览版；真实DeepSeek样本已验收，整本教材与长期维护效果尚待验证，联网研究与期末导出后续完成。",
+  "risk": "Candidate候选版。整本扫描教材及长期教学效果未验证。网上资料不保证匹配教材版本或补齐缺页；期末Word/PDF导出待完成。",
   "databaseImpact": "schema=1，无结构变更；更新前完整备份。",
   "tests": [
-    "TypeScript 编译与类型检查",
-    "离线单元与 HTTP 测试",
-    "Chrome 亮暗、窄屏及教材核验流程",
-    "签名、基础版本、数据保留与失败回滚",
-    "真实DeepSeek知识页、视觉、多轮Tutor、独立出题验题",
-    "真实Candidate回归修复，原Stable样本未修改"
+    "21项自动测试",
+    "8项Chrome原有功能流程及3项新增复习问答流程",
+    "真实用户教材一节7张知识卡片及问答经独立模型审查；非全书验证",
+    "签名更新、独立桌面运行、Word原始笔记保留"
   ],
-  "published": "2026-10-04T10:23:31.584Z",
+  "published": "2026-10-04T11:58:31.773Z",
   "delivery": "patch",
   "full": {
-    "version": "1.2.1",
+    "version": "1.3.0",
     "baseVersion": null,
-    "type": "Patch",
+    "type": "Minor",
     "schema": 1,
-    "url": "https://github.com/Felix1451991535/calculus-workbench-v7/releases/download/v1.2.1/CalculusWorkbench-v1.2.1-Windows-x64.zip",
-    "sha256": "2ebdfc43a73b82f4d0194586350b8ab040eccb58ea98199021c3dd0a998691df",
+    "url": "https://github.com/Felix1451991535/calculus-workbench-v7/releases/download/v1.3.0/CalculusWorkbench-v1.3.0-Windows-x64.zip",
+    "sha256": "562fe5620e4fc4a86bfb45a8d1f77b8b6d2f7aaaf9c8aa97f457d057e6f3009a",
     "files": [
       {
         "path": "ACCEPTANCE_REPORT.md",
-        "sha256": "d21a6e6a816b81b44442ab0789d90917f8f5d1d9b3f5cd8ee3f54c67be8ef81f"
+        "sha256": "4d0a0260ded3111ff8b4b3dda13037401b434373f23c081acc59f7a9ea7bf871"
       },
       {
         "path": "app/build/server/ai.js",
-        "sha256": "8f609a8085276cd6396419c158fb17528204df7acdf3de2fb8c7a0904cb240af"
+        "sha256": "d34604d5d9b9c12d4cb01678f79307cb2da3918102ec2068ac61a61ce6ca63a9"
       },
       {
         "path": "app/build/server/framework.js",
@@ -341,7 +344,7 @@
       },
       {
         "path": "app/build/server/index.js",
-        "sha256": "d3cd84b5abde8aa434d52624e5df8856597c8dbeb506cb1e1a2ab33017c90f83"
+        "sha256": "4bddea530c03fcb99b64bcab0cef17a98922c0b4a35097877e79b828f5d04d21"
       },
       {
         "path": "app/build/server/learning.js",
@@ -368,6 +371,10 @@
         "sha256": "cc58bc8856a82a1881dd7b0f02270609e4a8125b31dbd4860c46b94889e7c7f1"
       },
       {
+        "path": "app/build/server/study.js",
+        "sha256": "9ec1fbc3f2c1b7c24acceceaf37ac0e4abad2f068653b08e319586314375ca02"
+      },
+      {
         "path": "app/build/server/updates.js",
         "sha256": "c30e9db7b295e463ef59a0a0a39ca371737408ee33905b7b3f7b8f58e4bfb2ce"
       },
@@ -376,12 +383,12 @@
         "sha256": "a1a3eb1b4364a883767beea42321105d9c6de1b0b3add5d900df8db8a4a8d7c2"
       },
       {
-        "path": "app/dist/assets/index-DugEMh_y.js",
-        "sha256": "230674162d1df43cc2bad2b4777abe398e9f1e5c95019cdb2088d5631d008da7"
+        "path": "app/dist/assets/index-BefLhfOZ.js",
+        "sha256": "6b03cca5f5857b50d4226199799957851f8ce7d95528653ed8609ed769215e8d"
       },
       {
-        "path": "app/dist/assets/index-XEDKIpwx.css",
-        "sha256": "06d8cb93a06dbd435317122509b66e729f4faa4c5fccbdf0c18fe8b81d939627"
+        "path": "app/dist/assets/index-CjG_YWB8.css",
+        "sha256": "f04a647012798df84fbaec5df0f33f82c737f891bc97abf3e5250490192fa694"
       },
       {
         "path": "app/dist/assets/KaTeX_AMS-Regular-BQhdFMY1.woff2",
@@ -625,11 +632,11 @@
       },
       {
         "path": "app/dist/index.html",
-        "sha256": "bc30d339da22f6f1ae2c768f5b974cbdba0856d1a088cfc0a53b7ff0a43dcc31"
+        "sha256": "e6dd39d526f792817df3d0ce4bae7d17ce0a7bc54e09978bf5d278ffc8e683ba"
       },
       {
         "path": "automation/acceptance.ts",
-        "sha256": "ce9b58ce6dad52c6e8ac85d42360406b6a5f9e298cbd2e8e4254d78f520fabbe"
+        "sha256": "512d6678e9d044cc13f8788e61c69390643ffef29a8a9b8827005f45ce1478ac"
       },
       {
         "path": "automation/agent-acceptance.ts",
@@ -637,7 +644,7 @@
       },
       {
         "path": "automation/desktop-acceptance.mjs",
-        "sha256": "5bd4ab791609171094a99f0006626f5e5cb079d756061bdbe95be8f733af0280"
+        "sha256": "61939f3447a06037485c9373025746d509aab77266ac0384d4c6cb02a0c50245"
       },
       {
         "path": "automation/Extract-SafeZip.ps1",
@@ -677,7 +684,11 @@
       },
       {
         "path": "automation/sign-release.mjs",
-        "sha256": "b46544db524a1c58d93786dd5b9b58456675b0d5553952dc99ff156434f0cf8a"
+        "sha256": "6a7d476c1331ec399ba86aedce61317efc12c41942844b36d0800cac8e6756f9"
+      },
+      {
+        "path": "automation/study-acceptance.ts",
+        "sha256": "59e88813e528accba718e4ed6c916bd6c2d1277777975cce9fc3e4131ba8c043"
       },
       {
         "path": "automation/updater.mjs",
@@ -35821,15 +35832,15 @@
       },
       {
         "path": "package-lock.json",
-        "sha256": "4d1c842e16a27dac681d45510f6535bf0162473a88ec1d3bee93fad76d858840"
+        "sha256": "c52d79cfbbb8280359a6e1077fbac937603ea0c9ea4f92f389cfd154b61fa2c3"
       },
       {
         "path": "package.json",
-        "sha256": "696ff2d4d02b41656f59246485706d055aeecd37b48d2cabf192f5c2eab8f171"
+        "sha256": "62c14e5c7a288f0be66603ef212326b1ad334a49ff8cebad2b2c3a126fa3e379"
       },
       {
         "path": "README_使用说明.txt",
-        "sha256": "0ad40afb867729e73e26e258d38e23c023714c8bbd10df6112034eccbb948bf9"
+        "sha256": "040f5bf422d8b19f70de602380c2ba42f10a778f2534fdad258bf95c219f18a4"
       },
       {
         "path": "runtime/LICENSE.txt",
@@ -35841,22 +35852,21 @@
       }
     ],
     "changes": [
-      "V7 独立重做的候选版本：教材核验、学习界面、记录与诊断、签名更新及回滚",
-      "独立Windows桌面窗口、可分享EXE安装包与桌面ZIP、持久任务动态及Word笔记导入"
+      "教材复习首页：按章节组织AI知识卡片，解释符号、条件、推导、例题、易错点与自测",
+      "扫描教材自动识别、联网书目及概念资料检索、独立审查、最多三轮修订与暂停续做",
+      "明确AI问答入口与选中内容追问；保留Word笔记、教材事实版本和学习数据"
     ],
-    "risk": "候选预览版；真实DeepSeek样本已验收，整本教材与长期维护效果尚待验证，联网研究与期末导出后续完成。",
+    "risk": "Candidate候选版。整本扫描教材及长期教学效果未验证。网上资料不保证匹配教材版本或补齐缺页；期末Word/PDF导出待完成。",
     "databaseImpact": "schema=1，无结构变更；更新前完整备份。",
     "tests": [
-      "TypeScript 编译与类型检查",
-      "离线单元与 HTTP 测试",
-      "Chrome 亮暗、窄屏及教材核验流程",
-      "签名、基础版本、数据保留与失败回滚",
-      "真实DeepSeek知识页、视觉、多轮Tutor、独立出题验题",
-      "真实Candidate回归修复，原Stable样本未修改"
+      "21项自动测试",
+      "8项Chrome原有功能流程及3项新增复习问答流程",
+      "真实用户教材一节7张知识卡片及问答经独立模型审查；非全书验证",
+      "签名更新、独立桌面运行、Word原始笔记保留"
     ],
-    "published": "2026-10-04T10:23:31.584Z",
+    "published": "2026-10-04T11:58:31.773Z",
     "delivery": "full",
-    "signature": "1mrBtLFajrlyLIxyxbCMVXXRWvzp6ZN/nXAYqL/ZZweMk2iN/so2kPsYV5VejxmQBb4pAaARdon7LcZx4I7oDA=="
+    "signature": "kEvrNbdRmWqW+i7Xf0VeOubZ5CLZhxYG6LQo27YFq9RravTtMFkw0hAwNvRImnxN2mg84ysCQVKmDFeFrGWqAQ=="
   },
-  "signature": "WoJWyOkp1GofwmUQ2TB4GSWL5T0SxHRrPjMVofTx/eu4p+3lK5z1/SWCNx3BYT2wXQOYWEC2CGXRMaXTf+vXAQ=="
+  "signature": "wNEjbeWRVOtacAA8mQGDlJjWyosa9AZ/S8eMxvHVw7plok8BtHhvpSJ4Pe8VqEpofDtQa+Z17ELS5Uqzk6suAQ=="
 }
