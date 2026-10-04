@@ -1,0 +1,32 @@
+{
+  "created": "2026-10-04T08:11:39.825Z",
+  "results": [
+    {
+      "name": "Windows ZIP解压与内置运行时启动",
+      "status": "PASS",
+      "detail": {
+        "status": "ok",
+        "product": "calculus-workbench-v7",
+        "instance": "6ce5dc8ecf538599d14420b17f8e188b64512fa53f9c07f1f1871d5e9268e1fc",
+        "schema": "1",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "name": "发行包实际PDF导入、备份及重启读取",
+      "status": "PASS",
+      "detail": {
+        "workspace": "cf900557-5827-44b5-a634-26081f05be4e",
+        "backup": "2026-10-04T08-11-37-956Z-manual"
+      }
+    },
+    {
+      "name": "整个软件目录移动后运行与完整备份恢复",
+      "status": "PASS",
+      "detail": {
+        "restored": true,
+        "moved": true
+      }
+    }
+  ]
+}
