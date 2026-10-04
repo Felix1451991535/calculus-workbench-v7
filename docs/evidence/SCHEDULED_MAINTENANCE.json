@@ -1,0 +1,66 @@
+[
+  {
+    "frequency": "daily",
+    "status": "PASS",
+    "checks": [
+      {
+        "name": "数据库完整性",
+        "status": "PASS"
+      },
+      {
+        "name": "教材文件与相对路径",
+        "status": "PASS"
+      },
+      {
+        "name": "失败任务检查",
+        "status": "PASS"
+      },
+      {
+        "name": "已发布内容公式检查",
+        "status": "PASS"
+      },
+      {
+        "name": "Candidate 修复 Agent",
+        "status": "PASS"
+      }
+    ]
+  },
+  {
+    "frequency": "weekly",
+    "status": "UNVERIFIED",
+    "checks": [
+      {
+        "name": "数据库完整性",
+        "status": "PASS"
+      },
+      {
+        "name": "教材文件与相对路径",
+        "status": "PASS"
+      },
+      {
+        "name": "失败任务检查",
+        "status": "PASS"
+      },
+      {
+        "name": "已发布内容公式检查",
+        "status": "PASS"
+      },
+      {
+        "name": "数据库备份恢复测试",
+        "status": "PASS"
+      },
+      {
+        "name": "数学渲染压力",
+        "status": "PASS"
+      },
+      {
+        "name": "真实教材/视觉/模型/性能回归",
+        "status": "UNVERIFIED"
+      },
+      {
+        "name": "Candidate 修复 Agent",
+        "status": "PASS"
+      }
+    ]
+  }
+]

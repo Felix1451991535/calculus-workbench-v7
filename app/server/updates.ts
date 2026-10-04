@@ -33,11 +33,15 @@ export async function checkUpdates(store:Store){
   writeFileSync(path.join(store.root,'updates/pending.json'),JSON.stringify(manifest,null,2));
   store.notify('update',`新版本 ${manifest.version}`,manifest);return {status:'AVAILABLE',current:local,manifest};
 }
-export async function downloadUpdate(store:Store){
+export async function downloadUpdate(store:Store,progress:(value:number)=>void=()=>{}){
   const manifest=verifyManifest(JSON.parse(readFileSync(path.join(store.root,'updates/pending.json'),'utf8')),readFileSync(path.join(store.root,'config/update-public.pem'),'utf8'));
   if(manifest.baseVersion&&manifest.baseVersion!==releaseVersion(store.root))throw new Error('补丁基础版本不匹配');
-  const response=await fetch(manifest.url,{signal:AbortSignal.timeout(120000)});if(!response.ok)throw new Error('补丁下载失败');
+  const response=await fetch(manifest.url,{signal:AbortSignal.timeout(1800000)});if(!response.ok)throw new Error('补丁下载失败');
   if(Number(response.headers.get('content-length')??0)>512*1024*1024)throw new Error('补丁体积超限');
-  const bytes=new Uint8Array(await response.arrayBuffer());if(bytes.byteLength>512*1024*1024||hash(bytes)!==manifest.sha256)throw new Error('补丁完整性校验失败');
+  if(!response.body)throw new Error('更新响应缺少文件内容');
+  const reader=response.body.getReader();const chunks:Uint8Array[]=[];let size=0;let last=-1;const expected=Number(response.headers.get('content-length')??0);
+  try{for(;;){const {done,value}=await reader.read();if(done)break;size+=value.byteLength;if(size>512*1024*1024)throw new Error('更新体积超限');chunks.push(value);const percent=expected?Math.min(95,Math.floor(size/expected*95)):0;if(percent!==last){progress(percent);last=percent;}}}catch(e){await reader.cancel().catch(()=>{});throw e;}
+  const bytes=new Uint8Array(size);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.byteLength;}if(hash(bytes)!==manifest.sha256)throw new Error('补丁完整性校验失败');
+
   writeFileSync(path.join(store.root,'updates/pending.zip'),bytes);return {status:'DOWNLOADED',manifest};
 }

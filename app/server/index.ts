@@ -85,7 +85,7 @@ export function createApp(root:string){
  app.get('/api/workspaces/:id/search',wrap((req,res)=>{const q=String(req.query.q??'').slice(0,100);res.json(store.facts(req.params.id).filter(f=>[f.title,f.content,f.chapter].some(s=>s.includes(q))).slice(0,50));}));
  app.get('/api/inbox',(_req,res)=>res.json(store.all('SELECT * FROM inbox ORDER BY created DESC LIMIT 100').map(n=>({...n,body:JSON.parse(n.body)}))));
  app.post('/api/updates/check',wrap(async(_req,res)=>res.json(await checkUpdates(store))));
- app.post('/api/updates/download',wrap(async(_req,res)=>res.json({task:await store.task(null,'UPDATE_DOWNLOAD',async()=>downloadUpdate(store))})));
+ app.post('/api/updates/download',wrap(async(_req,res)=>res.json({task:await store.task(null,'UPDATE_DOWNLOAD',p=>downloadUpdate(store,p))})));
  app.post('/api/updates/remind',wrap((_req,res)=>{store.notify('reminder','稍后安装更新',{next:new Date(Date.now()+86400000).toISOString()});res.json({ok:true});}));
  app.post('/api/updates/install',wrap((req,res)=>{
   if(req.body.confirm!==true)throw new Error('需要确认停止服务并安装更新');

@@ -4,7 +4,7 @@
   "type": "Patch",
   "schema": 1,
   "url": "https://github.com/Felix1451991535/calculus-workbench-v7/releases/download/v1.0.1/CalculusWorkbench-v1.0.1-Patch.zip",
-  "sha256": "3043f912f0ea92db1f0cd77ab84f2b45be88c2cde62ab7512709c3eec9694580",
+  "sha256": "7f476d4eb6ce050f364ea413146d5e9cb7a45ea2016d0e6bdbe9b625520d4d3e",
   "files": [
     {
       "path": "app/build/server/ai.js",
@@ -12,7 +12,7 @@
     },
     {
       "path": "app/build/server/index.js",
-      "sha256": "2a6f88d979753a7bb7f018a207fb26efee7001276eee658ccca2125861c2a391"
+      "sha256": "33677e95bdc74dab82c476e73b6c39aabe6f0785c2c0c9608add84518eb40357"
     },
     {
       "path": "app/build/server/learning.js",
@@ -32,7 +32,7 @@
     },
     {
       "path": "app/build/server/updates.js",
-      "sha256": "c91dd849441413f93e0f1f6bd50ec209d1a5c0c987c57a05f13141667f4e1be8"
+      "sha256": "c30e9db7b295e463ef59a0a0a39ca371737408ee33905b7b3f7b8f58e4bfb2ce"
     },
     {
       "path": "app/dist/assets/index-CeK398r4.js",
@@ -301,7 +301,7 @@
     "真实DeepSeek知识页、视觉、多轮Tutor、独立出题验题",
     "真实Candidate回归修复，原Stable样本未修改"
   ],
-  "published": "2026-10-04T08:15:58.752Z",
+  "published": "2026-10-04T08:25:18.400Z",
   "delivery": "patch",
   "full": {
     "version": "1.0.1",
@@ -309,11 +309,11 @@
     "type": "Patch",
     "schema": 1,
     "url": "https://github.com/Felix1451991535/calculus-workbench-v7/releases/download/v1.0.1/CalculusWorkbench-v1.0.1-Windows-x64.zip",
-    "sha256": "d4f06b94a24d6a23fb37b84ebc6004c74a2ea29d4cb3c3518844dc7e7808ff08",
+    "sha256": "43d2597aa02de24196d632b7cf0366b9dd8be785ea9cf7dcb60fae11aac25aaa",
     "files": [
       {
         "path": "ACCEPTANCE_REPORT.md",
-        "sha256": "e1f9e3d75d26b3b2576426e6091ffc66d8cba7f6812a6469879fa96f5abddc9e"
+        "sha256": "c52db9ee363bad52cd69d7fb4fd3b5e89c599033fdb19f256c8c14b2727893e8"
       },
       {
         "path": "app/build/server/ai.js",
@@ -321,7 +321,7 @@
       },
       {
         "path": "app/build/server/index.js",
-        "sha256": "2a6f88d979753a7bb7f018a207fb26efee7001276eee658ccca2125861c2a391"
+        "sha256": "33677e95bdc74dab82c476e73b6c39aabe6f0785c2c0c9608add84518eb40357"
       },
       {
         "path": "app/build/server/learning.js",
@@ -341,7 +341,7 @@
       },
       {
         "path": "app/build/server/updates.js",
-        "sha256": "c91dd849441413f93e0f1f6bd50ec209d1a5c0c987c57a05f13141667f4e1be8"
+        "sha256": "c30e9db7b295e463ef59a0a0a39ca371737408ee33905b7b3f7b8f58e4bfb2ce"
       },
       {
         "path": "app/dist/assets/index-CeK398r4.js",
@@ -609,7 +609,7 @@
       },
       {
         "path": "automation/launch.mjs",
-        "sha256": "660a7ed888f0934446bf9655fc017184d795da7ee2f3da2b38592410d58f68ef"
+        "sha256": "1ee1825385bc422a8cb4342ddd5f2acec1f1f646c75d9226254c6cb1e4d79629"
       },
       {
         "path": "automation/live-acceptance.ts",
@@ -641,11 +641,11 @@
       },
       {
         "path": "automation/updater.mjs",
-        "sha256": "6621dd3f4c30934c774073e53e55cb68cc44f32197d6d989e6cf44d172261659"
+        "sha256": "2278511e638b738e5452971f152f9a9392732f47488bd6037ebd4bbf6c4c4042"
       },
       {
         "path": "automation/verify-distribution.ts",
-        "sha256": "a41cc3260e1fc41b58b765e6e7a6831e0feabc24f815be5914cb7a23e1e45dc6"
+        "sha256": "a2d66a2b77ecb06671bb98fb82143b1341f7fa6f8665871421e0329d5adebd94"
       },
       {
         "path": "node_modules/.bin/katex",
@@ -32130,9 +32130,9 @@
       "真实DeepSeek知识页、视觉、多轮Tutor、独立出题验题",
       "真实Candidate回归修复，原Stable样本未修改"
     ],
-    "published": "2026-10-04T08:15:58.752Z",
+    "published": "2026-10-04T08:25:18.400Z",
     "delivery": "full",
-    "signature": "E+5jyD6vZ9yavuCP2wxDLCN/WNfFTMOW0PzjTRivV/LfUjOa8o2YHjY12qv6kKNXbAW3WAcuSItMwTfBSyefAA=="
+    "signature": "HxFaPG0rMewVAZM0iS2npJcZsAXyqnRIANrEeA6mIfnUIsRoobLP8Rvwu3HLThv9TxtAjhheiLeiL8FKgrjwDQ=="
   },
-  "signature": "Z01fNc5JI4p+mNYjrfMSzbkuJdxPOuzZ41caZJOwnhNQlQDo0rvJ2ZjYrcr1mQTzHDpODp/EEnYlK+kyKPHqCA=="
+  "signature": "K/KORBZhj5xUr6WKMwrKz4E/xBZXroYHFmA2Moxpgd3XDBem0vXNV7kp/9cRf9OtDeM0lXDMZMVTT87hIioTBQ=="
 }

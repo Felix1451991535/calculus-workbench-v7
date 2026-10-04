@@ -6,8 +6,11 @@ import {createHash} from 'node:crypto';
 const root=process.cwd();
 const port=4317;
 const url=`http://127.0.0.1:${port}`;
+const instance=createHash('sha256').update(path.resolve(root).toLowerCase()).digest('hex');
+let anotherInstallation=false;
 async function openBrowser(){if(process.platform==='win32')spawn('cmd.exe',['/c','start','',url],{windowsHide:true,stdio:'ignore'});}
-try{const res=await fetch(url+'/api/health',{signal:AbortSignal.timeout(1200)});if(res.ok){const data=await res.json();const instance=createHash('sha256').update(path.resolve(root).toLowerCase()).digest('hex');if(data.product==='calculus-workbench-v7'&&data.instance===instance){await openBrowser();process.exit(0);}}}catch{}
+try{const res=await fetch(url+'/api/health',{signal:AbortSignal.timeout(1200)});if(res.ok){const data=await res.json();if(data.product==='calculus-workbench-v7'&&data.instance===instance){await openBrowser();process.exit(0);}anotherInstallation=true;}}catch{}
+if(anotherInstallation)throw new Error('端口已被另一份软件占用，请关闭另一份工作台后再启动。');
 recover(root);
 let version=null;
 const current=path.join(root,'config/current-version.json');
@@ -21,4 +24,4 @@ const runtime=existsSync(path.join(base,'runtime/node.exe'))?path.join(base,'run
 const child=spawn(runtime,[server],{cwd:root,env:{...process.env,APP_ROOT:root,PORT:String(port)},windowsHide:true,stdio:'inherit'});
 mkdirSync(path.join(root,'logs'),{recursive:true});writeFileSync(path.join(root,'logs/service.pid'),String(child.pid));
 child.on('exit',code=>process.exit(code??0));
-for(let i=0;i<60;i++){await new Promise(r=>setTimeout(r,500));try{const res=await fetch(url+'/api/health',{signal:AbortSignal.timeout(1000)});if(res.ok){await openBrowser();break;}}catch{}}
+for(let i=0;i<60;i++){await new Promise(r=>setTimeout(r,500));try{const res=await fetch(url+'/api/health',{signal:AbortSignal.timeout(1000)});if(res.ok&&(await res.json()).instance===instance){await openBrowser();break;}}catch{}}
