@@ -1,5 +1,5 @@
 {
-  "created": "2026-10-04T08:11:39.825Z",
+  "created": "2026-10-04T08:31:20.408Z",
   "results": [
     {
       "name": "Windows ZIP解压与内置运行时启动",
@@ -7,7 +7,7 @@
       "detail": {
         "status": "ok",
         "product": "calculus-workbench-v7",
-        "instance": "6ce5dc8ecf538599d14420b17f8e188b64512fa53f9c07f1f1871d5e9268e1fc",
+        "instance": "581be39ef678e34ace361e48c826fe02f760c26ef7193fa59eb60ac39973ac6d",
         "schema": "1",
         "version": "1.0.0"
       }
@@ -16,8 +16,8 @@
       "name": "发行包实际PDF导入、备份及重启读取",
       "status": "PASS",
       "detail": {
-        "workspace": "cf900557-5827-44b5-a634-26081f05be4e",
-        "backup": "2026-10-04T08-11-37-956Z-manual"
+        "workspace": "1d9c1671-f480-4cea-86df-b169a7aaf975",
+        "backup": "2026-10-04T08-26-46-253Z-manual"
       }
     },
     {
@@ -26,6 +26,40 @@
       "detail": {
         "restored": true,
         "moved": true
+      }
+    },
+    {
+      "name": "实际在线签名清单检查及补丁下载",
+      "status": "PASS",
+      "detail": {
+        "version": "1.0.1",
+        "status": "DOWNLOADED"
+      }
+    },
+    {
+      "name": "实际补丁安装、候选启动自检与学习数据保留",
+      "status": "PASS",
+      "detail": {
+        "state": "STABLE",
+        "version": "1.0.1"
+      }
+    },
+    {
+      "name": "实际程序补丁启动失败自动回滚",
+      "status": "PASS",
+      "detail": {
+        "state": "ROLLED_BACK",
+        "dataPreserved": true
+      }
+    },
+    {
+      "name": "基础版本不匹配时完整在线升级保留学习数据",
+      "status": "PASS",
+      "detail": {
+        "state": "STABLE",
+        "version": "1.0.1",
+        "delivery": "full",
+        "dataPreserved": true
       }
     }
   ]

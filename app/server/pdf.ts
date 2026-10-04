@@ -3,6 +3,13 @@ import { Store, id, now, hash, contained } from './store.js';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
+export function textbookHeading(line:string){
+ const clean=line.replace(/\s+-->\s*$/,'').trim();
+ if(/^第\s*[一二三四五六七八九十\d]+\s*[章节]\s*\S/.test(clean)&&clean.length<=65&&!/[。；]/.test(clean))return clean.replace(/^第\s*([一二三四五六七八九十\d]+)\s*([章节])\s*/,'第$1$2 ');
+ if(/^\d+(\.\d+){1,2}\s+\S/.test(clean)&&clean.length<=65&&!/[。；，]/.test(clean)&&!/(所示|看出|中的条件|那么|于是)/.test(clean))return clean;
+ return null;
+}
+
 export async function importPDF(store:Store,bytes:Uint8Array,title:string,progress:(n:number)=>void) {
   const digest=hash(bytes); const existing=store.one('SELECT * FROM workspaces WHERE hash=?',digest);
   if(existing&&store.one('SELECT COUNT(*) n FROM pages WHERE workspace=?',existing.id).n===existing.pages) return {workspace:existing.id,duplicate:true};
@@ -27,7 +34,7 @@ export async function importPDF(store:Store,bytes:Uint8Array,title:string,progre
       let chunk:string[]=[]; let kind='片段'; let heading='';
       const flush=()=>{if(!chunk.length)return; const value=chunk.join('\n'); store.fact({workspace,chapter,kind,title:heading||value.slice(0,38),content:value,source:{textbook:workspace,chapter,pdfIndex:p,quote:value.slice(0,600),before:text.slice(0,120),after:text.slice(-120),precision:'page'}});chunk=[];};
       for(const line of lines) {
-        if(/^(第[一二三四五六七八九十\d]+[章节]|\d+(\.\d+){1,2}\s)/.test(line)){flush();chapter=line.slice(0,100);}
+        const section=textbookHeading(line);if(section){flush();chapter=section;}
         const matched=line.match(/^(定义|定理|推论|证明|例\s*\d+|习题|练习)/);
         if(matched || chunk.join('\n').length>1800){flush();heading=matched?line.slice(0,70):'';kind=matched?(matched[1].startsWith('例')?'例题':matched[1]):'片段';}
         chunk.push(line);

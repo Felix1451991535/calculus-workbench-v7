@@ -1,5 +1,5 @@
 {
-  "created": "2026-10-04T08:13:22.777Z",
+  "created": "2026-10-04T08:54:04.126Z",
   "fixture": "TEST FIXTURE ONLY; no user textbooks or credentials",
   "results": [
     {
@@ -20,6 +20,14 @@
     },
     {
       "name": "设置、完整备份与公式视图",
+      "status": "PASS"
+    },
+    {
+      "name": "知识框架与批量视觉识别的同意开关",
+      "status": "PASS"
+    },
+    {
+      "name": "同书对照资料上传与实际PDF切换查看",
       "status": "PASS"
     },
     {

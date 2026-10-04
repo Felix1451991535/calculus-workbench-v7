@@ -10,7 +10,7 @@ const execute=promisify(execFile);
 const editsSchema=z.object({summary:z.string(),edits:z.array(z.object({path:z.string(),before:z.string().min(1),after:z.string()})).max(12)});
 function sources(root:string,relative='app/server'):any[]{const dir=contained(root,relative);if(!existsSync(dir))return [];return readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?sources(root,relative+'/'+entry.name):/\.(ts|tsx|css)$/.test(entry.name)?[{path:relative+'/'+entry.name,body:readFileSync(path.join(dir,entry.name),'utf8').slice(0,24000)}]:[]);}
 export async function repairCandidate(store:Store){
- const faults=store.all("SELECT kind,status,COUNT(*) count FROM tasks WHERE status='FAILED' AND kind!='MAINTENANCE_REPAIR' GROUP BY kind,status");
+ const faults=store.all("SELECT t.kind,t.status,COUNT(*) count FROM tasks t WHERE t.status='FAILED' AND t.kind!='MAINTENANCE_REPAIR' AND NOT EXISTS(SELECT 1 FROM tasks success WHERE success.kind=t.kind AND success.workspace IS t.workspace AND success.status='DONE' AND success.updated>t.updated) GROUP BY t.kind,t.status");
  if(!faults.length)return {state:'NO_ACTION',message:'无已记录故障；健康检查照常执行，不生成无关修改。'};
  ready();
  if(!existsSync(path.join(store.root,'app/server/index.ts'))||!existsSync(path.join(store.root,'node_modules/tsx')))throw new Error('修复 Agent 需要开发维护工作副本及构建工具；普通发行包只执行健康检查。');

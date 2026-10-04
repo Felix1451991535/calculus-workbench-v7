@@ -1,0 +1,8 @@
+import {readFileSync,writeFileSync,existsSync,renameSync} from 'node:fs';
+import {getDocument} from 'pdfjs-dist/legacy/build/pdf.mjs';
+import path from 'node:path';
+import {Store,contained,hash,id,now} from './store.js';
+function file(store:Store,workspace:string){store.workspace(workspace);return contained(store.root,`data/workspaces/${workspace}/textbook/references.json`);}
+export function bookSources(store:Store,workspace:string){const book=store.workspace(workspace);const metadata=file(store,workspace);return [{id:'',title:book.title,pdf:book.pdf,pages:book.pages,kind:'primary',hash:book.hash},...(existsSync(metadata)?JSON.parse(readFileSync(metadata,'utf8')):[])];}
+export function bookSource(store:Store,workspace:string,reference=''){const source=bookSources(store,workspace).find(s=>s.id===reference);if(!source)throw new Error('对照资料不存在');return source;}
+export async function attachReference(store:Store,workspace:string,bytes:Uint8Array,title:string){const digest=hash(bytes);const old=bookSources(store,workspace).find(s=>s.hash===digest);if(old)return {source:old,duplicate:true};const loading=getDocument({data:new Uint8Array(bytes)});try{const pdf=await loading.promise;const source={id:id(),title,pdf:'',pages:pdf.numPages,kind:'reference',hash:digest,created:now()};source.pdf=`data/workspaces/${workspace}/textbook/reference-${source.id}.pdf`;writeFileSync(contained(store.root,source.pdf),bytes);const list=bookSources(store,workspace).filter(s=>s.kind!=='primary');list.push(source);const metadata=file(store,workspace);writeFileSync(metadata+'.tmp',JSON.stringify(list,null,2));renameSync(metadata+'.tmp',metadata);return {source,duplicate:false};}finally{await loading.destroy();}}

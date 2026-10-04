@@ -12,6 +12,9 @@ import { configure,publicSettings,generateKnowledge,tutor,vision,context,complet
 import { checkUpdates,downloadUpdate,releaseVersion } from './updates.js';
 import { repairCandidate } from './maintenance.js';
 import { organizeRecord,makeQuestion,structureBook } from './learning.js';
+import {visionBatch,batchState,pauseBatch} from './vision-batch.js';
+import {getFramework,explainFramework} from './framework.js';
+import {bookSources,bookSource,attachReference} from './sources.js';
 
 export function createApp(root:string){
  const store=new Store(root);const app=express();app.disable('x-powered-by');app.use(express.json({limit:'25mb'}));
@@ -45,19 +48,23 @@ export function createApp(root:string){
   const bytes=new Uint8Array(req.file.buffer);res.json({task:await store.task(null,'IMPORT',p=>importPDF(store,bytes,title,p))});
  }));
  app.get('/api/tasks/:id',wrap((req,res)=>{const task=store.one('SELECT * FROM tasks WHERE id=?',req.params.id);if(!task)return res.status(404).json({error:'任务不存在'});res.json({...task,result:JSON.parse(task.result)});}));
- app.get('/api/workspaces/:id/pdf',wrap((req,res)=>res.sendFile(contained(root,store.workspace(req.params.id).pdf))));
+ app.get('/api/workspaces/:id/pdf',wrap((req,res)=>res.sendFile(contained(root,bookSource(store,req.params.id,String(req.query.reference??'')).pdf))));
+ app.get('/api/workspaces/:id/sources',wrap((req,res)=>res.json(bookSources(store,req.params.id))));
+ app.post('/api/workspaces/:id/references',upload.single('pdf'),wrap(async(req,res)=>{if(!req.file||req.file.buffer.subarray(0,5).toString()!=='%PDF-')throw new Error('请选择有效PDF对照资料');const title=z.string().min(1).max(180).parse(req.body.title??req.file.originalname);res.json(await attachReference(store,req.params.id,new Uint8Array(req.file.buffer),title));}));
  app.get('/api/workspaces/:id/pages/:page',wrap((req,res)=>{const p=store.one('SELECT * FROM pages WHERE workspace=? AND idx=?',req.params.id,Number(req.params.page));if(!p)return res.status(404).json({error:'页面不存在'});res.json({...p,items:JSON.parse(p.items)});}));
  app.get('/api/workspaces/:id/facts',wrap((req,res)=>res.json(store.facts(req.params.id))));
  const factSchema=z.object({chapter:z.string().min(1).max(200),kind:z.string().min(1).max(50),title:z.string().min(1).max(200),content:z.string().min(1).max(50000),latex:z.string().max(20000).default(''),source:z.object({quote:z.string().min(1),pdfIndex:z.number().int().positive().optional(),before:z.string().optional(),after:z.string().optional(),precision:z.string().optional()}).passthrough(),verified:z.boolean()});
- app.post('/api/workspaces/:id/facts',wrap((req,res)=>{const input=factSchema.parse(req.body);store.workspace(req.params.id);if(input.source.pdfIndex&&!store.one('SELECT idx FROM pages WHERE workspace=? AND idx=?',req.params.id,input.source.pdfIndex))throw new Error('PDF 页索引不存在');if(input.verified&&(mathErrors(input.content).length||mathErrors(input.latex?`$${input.latex}$`:'').length))throw new Error('公式未通过解析，不能核验');res.json({id:store.fact({...input,workspace:req.params.id,source:{...input.source,textbook:req.params.id}},input.verified?'VERIFIED':'NEEDS_VERIFY')});}));
+ app.post('/api/workspaces/:id/facts',wrap((req,res)=>{const input=factSchema.parse(req.body);store.workspace(req.params.id);if(input.source.pdfIndex&&(input.source.pdfIndex>bookSource(store,req.params.id,String(input.source.referenceId??'')).pages))throw new Error('PDF 页索引不存在');if(input.verified&&(mathErrors(input.content).length||mathErrors(input.latex?`$${input.latex}$`:'').length))throw new Error('公式未通过解析，不能核验');res.json({id:store.fact({...input,workspace:req.params.id,source:{...input.source,textbook:req.params.id}},input.verified?'VERIFIED':'NEEDS_VERIFY')});}));
  app.post('/api/workspaces/:id/facts/:fact/verify',wrap((req,res)=>{
   const input=factSchema.parse(req.body);const previous=store.one('SELECT * FROM facts WHERE id=? AND workspace=?',req.params.fact,req.params.id);if(!previous)throw new Error('事实不存在');
   if(store.one('SELECT id FROM facts WHERE previous=?',previous.id))throw new Error('版本已更新，请刷新后再核验');
-  if(input.source.pdfIndex&&!store.one('SELECT idx FROM pages WHERE workspace=? AND idx=?',req.params.id,input.source.pdfIndex))throw new Error('PDF 页索引不存在');
+  if(input.source.pdfIndex&&(input.source.pdfIndex>bookSource(store,req.params.id,String(input.source.referenceId??'')).pages))throw new Error('PDF 页索引不存在');
   if(input.verified&&(mathErrors(input.content).length||mathErrors(input.latex?`$${input.latex}$`:'').length))throw new Error('公式未通过解析，不能核验');
   res.json({id:store.fact({...input,workspace:req.params.id,source:{...input.source,textbook:req.params.id}},input.verified?'VERIFIED':'NEEDS_VERIFY',previous.id)});
  }));
  app.get('/api/workspaces/:id/audit',wrap((req,res)=>res.json(store.audit(req.params.id))));
+ app.get('/api/workspaces/:id/framework',wrap((req,res)=>res.json(getFramework(store,req.params.id))));
+ app.post('/api/workspaces/:id/framework',wrap(async(req,res)=>{if(req.body.consent!==true)throw new Error('请确认将章节标题发送给模型生成简短学习建议');res.json({task:await store.task(req.params.id,'FRAMEWORK',async()=>explainFramework(store,req.params.id))});}));
  app.post('/api/workspaces/:id/structure',wrap(async(req,res)=>{if(req.body.consent!==true)throw new Error('请确认发送教材结构候选给配置模型');res.json({task:await store.task(req.params.id,'STRUCTURE',async()=>structureBook(store,req.params.id))});}));
  app.get('/api/workspaces/:id/structure',wrap((req,res)=>res.json({edges:store.all('SELECT * FROM edges WHERE workspace=?',req.params.id),symbols:store.all('SELECT * FROM symbols WHERE workspace=?',req.params.id)})));
  app.post('/api/workspaces/:id/structure/verify',wrap((req,res)=>{const input=z.object({kind:z.enum(['edge','symbol']),from:z.string().optional(),to:z.string().optional(),relation:z.string().optional(),chapter:z.string().optional(),symbol:z.string().optional()}).parse(req.body);if(input.kind==='edge')store.run("UPDATE edges SET status='VERIFIED' WHERE workspace=? AND from_kp=? AND to_kp=? AND kind=?",req.params.id,input.from??'',input.to??'',input.relation??'');else store.run("UPDATE symbols SET status='VERIFIED' WHERE workspace=? AND chapter=? AND symbol=?",req.params.id,input.chapter??'',input.symbol??'');res.json({ok:true});}));
@@ -67,7 +74,10 @@ export function createApp(root:string){
  app.post('/api/workspaces/:id/generate',wrap(async(req,res)=>{const {kp}=kpBody.parse(req.body);context(store,req.params.id,kp);if(req.body.consent!==true)throw new Error('请确认发送相关教材片段与个人记录给配置的模型服务');res.json({task:await store.task(req.params.id,'KNOWLEDGE',async()=>generateKnowledge(store,req.params.id,kp))});}));
  app.get('/api/workspaces/:id/messages/:kp',wrap((req,res)=>res.json(store.all('SELECT * FROM messages WHERE workspace=? AND kp=? ORDER BY created',req.params.id,req.params.kp))));
  app.post('/api/workspaces/:id/tutor',wrap(async(req,res)=>{const input=z.object({kp:z.string(),question:z.string().min(1).max(10000),selection:z.string().max(10000).default(''),consent:z.literal(true)}).parse(req.body);res.json({task:await store.task(req.params.id,'TUTOR',async()=>tutor(store,req.params.id,input.kp,input.question,input.selection))});}));
- app.post('/api/workspaces/:id/vision',wrap(async(req,res)=>{const input=z.object({page:z.number().int().positive(),image:z.string(),consent:z.literal(true)}).parse(req.body);res.json({task:await store.task(req.params.id,'VISION',async()=>vision(store,req.params.id,input.page,input.image))});}));
+ app.post('/api/workspaces/:id/vision',wrap(async(req,res)=>{const input=z.object({page:z.number().int().positive(),image:z.string(),reference:z.string().default(''),consent:z.literal(true)}).parse(req.body);res.json({task:await store.task(req.params.id,'VISION',async()=>vision(store,req.params.id,input.page,input.image,input.reference))});}));
+ app.get('/api/workspaces/:id/vision-batch',wrap((req,res)=>res.json({...batchState(store,req.params.id,String(req.query.reference??'')),active:store.one("SELECT id,status,progress FROM tasks WHERE workspace=? AND kind='VISION_BATCH' AND status IN ('QUEUED','RUNNING') ORDER BY created DESC LIMIT 1",req.params.id)??null})));
+ app.post('/api/workspaces/:id/vision-batch',wrap(async(req,res)=>{const input=z.object({from:z.number().int().positive(),to:z.number().int().positive(),reference:z.string().default(''),consent:z.literal(true)}).parse(req.body);const book=bookSource(store,req.params.id,input.reference);if(input.to<input.from||input.to>book.pages)throw new Error('页范围超出教材');if(store.one("SELECT id FROM tasks WHERE workspace=? AND kind='VISION_BATCH' AND status IN ('QUEUED','RUNNING')",req.params.id))throw new Error('此教材已有批量识别任务，请等待或暂停');res.json({task:await store.task(req.params.id,'VISION_BATCH',p=>visionBatch(store,req.params.id,input.from,input.to,p,input.reference))});}));
+ app.post('/api/workspaces/:id/vision-batch/cancel',wrap((req,res)=>res.json(pauseBatch(store,req.params.id,String(req.body.reference??'')))));
  app.get('/api/workspaces/:id/records',wrap((req,res)=>res.json(store.all('SELECT * FROM records WHERE workspace=? ORDER BY created DESC',req.params.id).map(r=>({...r,raw:JSON.parse(r.raw),derived:JSON.parse(r.derived)})))));
  app.post('/api/workspaces/:id/records',wrap((req,res)=>{
   const input=z.object({kind:z.enum(['mistake','transcript','evidence','reflection']),kp:z.string().default(''),raw:z.record(z.string(),z.unknown()),derived:z.record(z.string(),z.unknown()).default({})}).parse(req.body);store.workspace(req.params.id);

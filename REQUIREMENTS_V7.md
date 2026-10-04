@@ -6,11 +6,11 @@
 |---|---|---|
 | 1 产品目标 | 学习页、Tutor、教辅Reviewer | 已接入；真实样本教学已验收，整本教材质量待长期验证 |
 | 2 技术架构 | app/server、app/client、runtime | 指定技术栈、本机服务、同源令牌、相对路径 |
-| 3 Workspace | store.ts、pdf.ts | 独立教材、哈希去重、分层记录 |
-| 4 文本+视觉 | pdf.ts、ai.ts、PDF原页窗口 | 双通道接入；视觉真实服务样本已验收 |
+| 3 Workspace | store.ts、pdf.ts | 独立教材、哈希去重、分层记录、同书多份原件对照 |
+| 4 文本+视觉 | pdf.ts、ai.ts、PDF原页窗口 | 双通道与按来源批量视觉识别/续做；视觉真实服务样本已验收 |
 | 5 可选OCR | 后续Minor路线 | 未加入本地/第三方OCR，视觉候选已接入 |
 | 6 Ground Truth | facts接口与核验UI | 候选/已核验分离、稳定KP、版本历史与锚点 |
-| 7 教学大脑 | ai.ts | 可信检索、独立Reviewer、引用及公式闸门、内存密钥 |
+| 7 教学大脑 | ai.ts | 可信检索、章/节/主题框架、独立Reviewer、引用及公式闸门、内存密钥 |
 | 8 深度教辅 | generateKnowledge、review | 提示与检查覆盖要求；真实零基础样本已通过，整本教材质量UNVERIFIED |
 | 9 Tutor | tutor、选中追问 | 历史卡点与改变策略；真实两轮样本已通过 |
 | 10 个人闭环 | records、learning.ts | 原始转写/错题/对话、独立整理派生内容 |
