@@ -1,0 +1,10 @@
+{
+  "version": "1.3.0",
+  "publicCheck": "PASS",
+  "signedDownload": "PASS",
+  "desktopRestart": "PASS",
+  "originalPDFsFactsRecordsPreserved": "PASS",
+  "workspaceCount": 1,
+  "realSampleReady": "PASS",
+  "root": "USER D-DRIVE INSTALLATION"
+}
