@@ -1,0 +1,21 @@
+{
+  "version": "1.4.0",
+  "publicCheck": "PASS",
+  "signedDownload": "PASS",
+  "desktopRestart": "PASS",
+  "originalPDFsFactsRecordsPreserved": "PASS",
+  "workspaceCount": 1,
+  "wholeTextConverted": "PASS",
+  "conversion": {
+    "pages": 216,
+    "textLines": 8184,
+    "capturedLines": 8184,
+    "entries": 1047,
+    "accepted": 1036,
+    "localExceptions": 11,
+    "complete": true,
+    "status": "TEXT_CONVERTED",
+    "notice": "全文按教材顺序转换；公式自动检查不等于数学内容已审核。"
+  },
+  "root": "USER D-DRIVE INSTALLATION"
+}
