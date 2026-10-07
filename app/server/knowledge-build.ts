@@ -3,6 +3,7 @@ import path from 'node:path';
 import {Store,contained,hash,now} from './store.js';
 import {localFramework} from './framework.js';
 import {textbookQuality} from './textbook-quality.js';
+import {teachingReviewPolicy} from './teaching-quality.js';
 
 export const relationKinds=['belongs_to','prerequisite','next','defines','uses','proves','example_of','exercise_of','confusable_with','derived_from'] as const;
 export const learningFocus=['concept','definition','symbol','condition','formula','property','theorem','proof_goal','proof_strategy','proof_step','hidden_step','example','method','exercise','diagram','remark','connection'] as const;
@@ -46,7 +47,7 @@ export function buildSourceKnowledge(store:Store,workspace:string){
 export function teachingNodeId(workspace:string,sourceIds:string[],focus:string,occurrence:number){return 'teach-'+hash(workspace+':'+[...sourceIds].sort().join(',')+':'+focus+':'+occurrence).slice(0,24);}
 export function attachTeachingGraph(store:Store,workspace:string,sourceGraph:any,units:any[],lessons:any){
  const nodes=[...sourceGraph.nodes];const edges=[...sourceGraph.edges];const required=new Set<string>();const taught=new Set<string>();let reviewedUnits=0;
- for(const unit of units){unit.source.forEach((s:any)=>required.add(s.id));const lesson=lessons[unit.id];if(lesson?.format!==2||lesson.policy!=='V7.1'||lesson.sourceHash!==unit.sourceHash||lesson.status!=='CANDIDATE_REVIEWED')continue;reviewedUnits++;
+ for(const unit of units){unit.source.forEach((s:any)=>required.add(s.id));const lesson=lessons[unit.id];if(lesson?.format!==2||lesson.policy!=='V7.1'||lesson.reviewPolicy!==teachingReviewPolicy||lesson.sourceHash!==unit.sourceHash||lesson.status!=='CANDIDATE_REVIEWED')continue;reviewedUnits++;
   const occurrences=new Map<string,number>();let previous:string|null=null;
   for(const concept of lesson.concepts){const focus=concept.focus??'concept';const key=[...concept.sourceIds].sort().join(',')+':'+focus;const occurrence=occurrences.get(key)??0;occurrences.set(key,occurrence+1);const id=teachingNodeId(workspace,concept.sourceIds,focus,occurrence);
    nodes.push({id,layer:'ai_teaching',kind:focus,title:concept.title,unitId:unit.id,content:concept.body,status:'CANDIDATE_REVIEWED',sourceIds:concept.sourceIds,symbols:concept.symbols??[]});

@@ -1,0 +1,24 @@
+{
+  "version": "1.4.0",
+  "realProvider": "DeepSeek",
+  "scope": "One real user textbook section; not full-book validation",
+  "unit": "83d83dfa1d8f70d59a2d",
+  "lessonStatus": "CANDIDATE_REVIEWED",
+  "independentReview": true,
+  "concepts": 25,
+  "sourceBlocks": 9,
+  "focus": [
+    "symbol",
+    "concept",
+    "definition",
+    "remark",
+    "diagram",
+    "proof_goal",
+    "proof_strategy",
+    "proof_step",
+    "hidden_step",
+    "method"
+  ],
+  "issues": 0,
+  "tutor": "CANDIDATE_REVIEWED"
+}

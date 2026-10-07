@@ -1,0 +1,13 @@
+{
+  "version": "1.4.0",
+  "date": "2026-10-07",
+  "tests": 40,
+  "typecheck": "PASS",
+  "build": "PASS",
+  "studyBrowser": "PASS",
+  "designBrowser": "PASS",
+  "sourceBook": "216 pages / 8184 lines / 1047 blocks; not semantic full-book acceptance",
+  "evidenceLogs": "LOCAL D-DRIVE product-validation-20261007",
+  "wholeBookTeaching": "UNVERIFIED",
+  "reasoningReviewerRegression": "Previously accepted integer-bound error rejected by thinking Reviewer; corrected section and AI answer passed reasoning review; independent code and selected-section audit completed"
+}

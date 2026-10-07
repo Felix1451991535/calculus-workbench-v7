@@ -1,0 +1,170 @@
+{
+  "fixture": "AUTHORED UI ONLY: no real model acceptance, no user textbook/key",
+  "results": [
+    {
+      "theme": "light",
+      "width": 390,
+      "overflow": {
+        "document": false,
+        "panels": []
+      },
+      "themeContrast": [
+        {
+          "surface": "--paper",
+          "ratio": 5.979882683594325
+        },
+        {
+          "surface": "--side",
+          "ratio": 5.312514749645736
+        },
+        {
+          "surface": "--soft",
+          "ratio": 5.116186702502757
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "overflow": {
+        "document": false,
+        "panels": []
+      },
+      "themeContrast": [
+        {
+          "surface": "--paper",
+          "ratio": 5.979882683594325
+        },
+        {
+          "surface": "--side",
+          "ratio": 5.312514749645736
+        },
+        {
+          "surface": "--soft",
+          "ratio": 5.116186702502757
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "overflow": {
+        "document": false,
+        "panels": []
+      },
+      "themeContrast": [
+        {
+          "surface": "--paper",
+          "ratio": 5.979882683594325
+        },
+        {
+          "surface": "--side",
+          "ratio": 5.312514749645736
+        },
+        {
+          "surface": "--soft",
+          "ratio": 5.116186702502757
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "overflow": {
+        "document": false,
+        "panels": []
+      },
+      "themeContrast": [
+        {
+          "surface": "--paper",
+          "ratio": 6.755342899243188
+        },
+        {
+          "surface": "--side",
+          "ratio": 7.837470738536072
+        },
+        {
+          "surface": "--soft",
+          "ratio": 5.60655583243196
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "overflow": {
+        "document": false,
+        "panels": []
+      },
+      "themeContrast": [
+        {
+          "surface": "--paper",
+          "ratio": 6.755342899243188
+        },
+        {
+          "surface": "--side",
+          "ratio": 7.837470738536072
+        },
+        {
+          "surface": "--soft",
+          "ratio": 5.60655583243196
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "overflow": {
+        "document": false,
+        "panels": []
+      },
+      "themeContrast": [
+        {
+          "surface": "--paper",
+          "ratio": 6.755342899243188
+        },
+        {
+          "surface": "--side",
+          "ratio": 7.837470738536072
+        },
+        {
+          "surface": "--soft",
+          "ratio": 5.60655583243196
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "name": "\u52a0\u8f7d\u3001\u540c\u610f/\u7981\u7528\u3001\u7a7a\u641c\u7d22\u3001\u952e\u76d8\u7126\u70b9\u3001\u9519\u8bef\u91cd\u8bd5\u3001reduced-motion\u4e0e\u65e0\u524d\u7aef\u5f02\u5e38",
+      "status": "PASS",
+      "loadMs": 1091.4130999999998,
+      "interactionMs": 8.494300000000294,
+      "contrast": [
+        {
+          "surface": "--paper",
+          "ratio": 5.979882683594325
+        },
+        {
+          "surface": "--side",
+          "ratio": 5.312514749645736
+        },
+        {
+          "surface": "--soft",
+          "ratio": 5.116186702502757
+        }
+      ],
+      "darkSurface": "rgb(36, 48, 42)",
+      "motion": {
+        "animation": "none",
+        "scroll": "auto",
+        "navTransition": "0s"
+      }
+    }
+  ],
+  "errors": []
+}

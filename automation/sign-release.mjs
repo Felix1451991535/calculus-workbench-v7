@@ -27,7 +27,7 @@ if(version==='1.3.2'){
 }
 if(version==='1.4.0'){
  manifest.changes=['按 V7.1 修复整本教材准入：可靠原文自动进入教材知识层，识别疑点仅局部待核对','持久化整本构建状态、稳定知识ID、来源及教学关联、孤立内容检查和独立教学审核','复习界面显示教材纳入、局部异常、教学节点与全书进度，展开符号及证明关键步骤'];
- manifest.tests=['36项自动测试、TypeScript类型检查和生产构建通过','实际216页教材完整8184行归属：1047原文块，1036自动纳入、11局部异常','Chrome教材学习及问答流程与真实教材窄屏验证'];
+ manifest.tests=['40项自动测试、TypeScript类型检查和生产构建通过','实际216页教材完整8184行归属：1047原文块，1036自动纳入、11局部异常','Chrome教材学习及问答流程与真实教材窄屏验证'];
  manifest.risk='Candidate。教材提取与局部排版检查已验证；整本AI深度教学及关联的真实模型验收仍未完成，不能把原文覆盖当成完整教学验收。';
 }
 const fullZip=path.join(root,'release',`CalculusWorkbench-v${version}-Windows-x64.zip`);
@@ -40,4 +40,3 @@ manifest.delivery='patch';manifest.full={...full,signature:sign(null,Buffer.from
 const publishedManifest=args.includes('--full-only')?full:manifest;
 const signature=sign(null,Buffer.from(canonical(publishedManifest)),readFileSync(privateFile)).toString('base64');
 mkdirSync(path.join(root,'channels'),{recursive:true});writeFileSync(path.join(root,'channels/candidate.json'),JSON.stringify({...publishedManifest,signature},null,2));writeFileSync(path.join(root,'release',`update-v${version}.json`),JSON.stringify({...publishedManifest,signature},null,2));console.log('已签名候选清单 '+version+'；私钥保留于独立发布工作目录。');
-
