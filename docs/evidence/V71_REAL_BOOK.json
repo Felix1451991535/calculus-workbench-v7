@@ -1,0 +1,31 @@
+{
+  "spec": "V7.1",
+  "fixture": "User textbook in isolated D-drive snapshot; no textbook text in this report",
+  "coverage": {
+    "pages": 216,
+    "expectedPages": 216,
+    "textLines": 8184,
+    "capturedLines": 8184,
+    "sourceBlocks": 1047,
+    "accepted": 1036,
+    "localExceptions": 11,
+    "orphanIds": [],
+    "missingPages": [],
+    "unreadablePages": [],
+    "crossPageBlocks": 177,
+    "complete": true
+  },
+  "sourceNodes": 1047,
+  "units": 138,
+  "formalDefinitions": 40,
+  "theorems": 86,
+  "sourceHashesPreserved": true,
+  "teaching": "UNVERIFIED: model run not represented by source extraction",
+  "browser": {
+    "status": "PASS",
+    "desktop": true,
+    "narrow": true,
+    "sourceBlocks": 9,
+    "pageErrors": 0
+  }
+}

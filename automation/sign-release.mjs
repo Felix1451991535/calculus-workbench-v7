@@ -25,6 +25,11 @@ if(version==='1.3.2'){
  manifest.tests=['26项自动测试，包括 JSON 错误重试、完整输入保留与三次拒绝','真实教材章节导读生成与独立审核通过','全文转换与公开签名更新保留数据已验证'];
  manifest.risk='Candidate；整本教材 AI 转换与审核仍须按实际进度核对，未通过的内容不能标已审核。';
 }
+if(version==='1.4.0'){
+ manifest.changes=['按 V7.1 修复整本教材准入：可靠原文自动进入教材知识层，识别疑点仅局部待核对','持久化整本构建状态、稳定知识ID、来源及教学关联、孤立内容检查和独立教学审核','复习界面显示教材纳入、局部异常、教学节点与全书进度，展开符号及证明关键步骤'];
+ manifest.tests=['36项自动测试、TypeScript类型检查和生产构建通过','实际216页教材完整8184行归属：1047原文块，1036自动纳入、11局部异常','Chrome教材学习及问答流程与真实教材窄屏验证'];
+ manifest.risk='Candidate。教材提取与局部排版检查已验证；整本AI深度教学及关联的真实模型验收仍未完成，不能把原文覆盖当成完整教学验收。';
+}
 const fullZip=path.join(root,'release',`CalculusWorkbench-v${version}-Windows-x64.zip`);
 if(!existsSync(fullZip))throw new Error('缺少完整发行包，拒绝发布不能跨版本升级的清单');
 const eligible=p=>/^(app\/(build|dist)\/|node_modules\/|runtime\/|automation\/)[a-zA-Z0-9_./@+-]+$/.test(p)||['package.json','package-lock.json','ACCEPTANCE_REPORT.md','README_使用说明.txt'].includes(p);
@@ -35,3 +40,4 @@ manifest.delivery='patch';manifest.full={...full,signature:sign(null,Buffer.from
 const publishedManifest=args.includes('--full-only')?full:manifest;
 const signature=sign(null,Buffer.from(canonical(publishedManifest)),readFileSync(privateFile)).toString('base64');
 mkdirSync(path.join(root,'channels'),{recursive:true});writeFileSync(path.join(root,'channels/candidate.json'),JSON.stringify({...publishedManifest,signature},null,2));writeFileSync(path.join(root,'release',`update-v${version}.json`),JSON.stringify({...publishedManifest,signature},null,2));console.log('已签名候选清单 '+version+'；私钥保留于独立发布工作目录。');
+
